@@ -89,7 +89,7 @@ class JIRA(client.JIRA):
             self.init_app(app, config_prefix)
 
     def init_app(self, app, config_prefix=None):
-        """Actual method to read Redis settings from app configuration and initialize the JIRA instance.
+        """Actual method to read JIRA settings from app configuration and initialize the JIRA instance.
 
         Positional arguments:
         app -- Flask application instance.
@@ -114,5 +114,5 @@ class JIRA(client.JIRA):
         # Read config.
         args = read_config(app, config_prefix)
 
-        # Instantiate StrictRedis.
-        super(JIRA, self).__init__(**args)  # Initialize fully.
+        # Initialize fully.
+        super(JIRA, self).__init__(**args)
