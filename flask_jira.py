@@ -8,12 +8,12 @@ from jira import client
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 def read_config(app, prefix):
     """Generate a dictionary compatible with jira.client.JIRA.__init__() keyword arguments from data in the Flask
-    application's configuration values relevant to JIRA. If both basic and oauth settings are specified, basic
+    application's configuration values relevant to JIRA. If both basic and OAuth settings are specified, OAuth
     authentication takes precedence.
 
     Usage:
@@ -33,16 +33,21 @@ def read_config(app, prefix):
         app.config.get('{}_{}'.format(prefix, suffix)) for suffix in suffixes
     ]
     result = dict(options=dict(server=config_server))
-    # Try basic authentication.
-    if config_user and config_password:
-        result['basic_auth'] = (config_user, config_password)
+    # Gather authentication data.
+    basic = (config_user, config_password)
+    oauth = dict(
+        access_token=config_token,
+        access_token_secret=config_secret,
+        consumer_key=config_consumer,
+        key_cert=config_cert,
+    )
+    # Apply authentication data.
+    if any(oauth.values()):
+        result['oauth'] = oauth
+    elif all(basic):
+        result['basic_auth'] = basic
     else:
-        result['oauth'] = dict(
-            access_token=config_token,
-            access_token_secret=config_secret,
-            consumer_key=config_consumer,
-            key_cert=config_cert,
-        )
+        raise ValueError('No/incomplete JIRA authentication settings specified in the Flask config.')
     # Done.
     return result
 

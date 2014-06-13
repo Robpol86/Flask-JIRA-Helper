@@ -1,10 +1,10 @@
-Flask-JIRA-Helper
-=================
+# Flask-JIRA-Helper
 
 A simple JIRA extension for Flask. Supports basic authentication and OAuth.
 
-Supported Platforms
--------------------
+*OAuth is currently untested.*
+
+## Supported Platforms
 
 * OSX and Linux.
 * Python 2.7
@@ -13,8 +13,7 @@ Supported Platforms
 
 Probably works on other versions too.
 
-Quickstart
-----------
+## Quickstart
 
 Install:
 ```bash
@@ -36,8 +35,7 @@ jira = JIRA(app)
 print jira.projects()
 ```
 
-Factory Example
----------------
+## Factory Example
 
 ```python
 # extensions.py
@@ -68,8 +66,7 @@ app = create_app()
 app.run()
 ```
 
-Configuration
--------------
+## Configuration
 
 `Flask-JIRA-Helper` subclasses `jira.client.JIRA` and adds the init_app() method for delayed initialization (for
 applications that instantiate extensions in a separate file, but run init_app() in the same file Flask() was
@@ -83,3 +80,13 @@ The following config settings are searched for in the Flask application's config
 * `JIRA_SECRET` -- OAuth authentication access token secret.
 * `JIRA_CONSUMER` -- OAuth authentication consumer key.
 * `JIRA_CERT` -- OAuth authentication key certificate data.
+
+## Changelog
+
+#### 0.1.1
+
+* Clearer error message when no credentials are specified.
+
+#### 0.1.0
+
+* Initial release.
