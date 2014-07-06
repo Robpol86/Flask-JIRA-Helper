@@ -83,6 +83,10 @@ The following config settings are searched for in the Flask application's config
 
 ## Changelog
 
+#### 0.1.2
+
+* Fixed AttributeError when JIRA is instantiated but init_app() isn't called.
+
 #### 0.1.1
 
 * Clearer error message when no credentials are specified.

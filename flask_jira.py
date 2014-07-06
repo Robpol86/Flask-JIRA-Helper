@@ -8,7 +8,7 @@ from jira import client
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 
 def read_config(app, prefix):
@@ -85,6 +85,7 @@ class JIRA(client.JIRA):
         config_prefix -- Prefix used in config key names in the Flask app's configuration. More info in
             self.init_app()'s docstring.
         """
+        self._options = dict()
         if app is not None:
             self.init_app(app, config_prefix)
 
