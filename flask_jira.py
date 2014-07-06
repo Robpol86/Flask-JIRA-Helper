@@ -85,7 +85,8 @@ class JIRA(client.JIRA):
         config_prefix -- Prefix used in config key names in the Flask app's configuration. More info in
             self.init_app()'s docstring.
         """
-        self._options = dict()
+        self.original_kill_session = self.kill_session
+        self.kill_session = lambda x: None  # JIRA calls this even when no session was created. Disabling for now.
         if app is not None:
             self.init_app(app, config_prefix)
 
@@ -104,6 +105,9 @@ class JIRA(client.JIRA):
                 JIRA_SERVER = 'http://jira.mycompany.com'
                 JIRA_TOKEN = '<token for oauthing users>'
         """
+        # Restore self.kill_session().
+        self.kill_session = self.original_kill_session
+
         # Normalize the prefix and add this instance to app.extensions.
         config_prefix = (config_prefix or 'JIRA').rstrip('_').upper()
         if not hasattr(app, 'extensions'):
