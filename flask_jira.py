@@ -3,16 +3,19 @@
 https://github.com/Robpol86/Flask-JIRA-Helper
 https://pypi.python.org/pypi/Flask-JIRA-Helper
 """
-from jira import client
 
+from jira import client
+from requests import ConnectionError
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '0.1.2'
+__version__ = '0.2.0'
 
 
 def read_config(app, prefix):
-    """Generate a dictionary compatible with jira.client.JIRA.__init__() keyword arguments from data in the Flask
+    """Return a jira.client.JIRA.__init__() compatible dictionary from data in the Flask config.
+
+    Generate a dictionary compatible with jira.client.JIRA.__init__() keyword arguments from data in the Flask
     application's configuration values relevant to JIRA. If both basic and OAuth settings are specified, OAuth
     authentication takes precedence.
 
@@ -71,10 +74,17 @@ class JIRA(client.JIRA):
     JIRA_SECRET -- OAuth authentication access token secret.
     JIRA_CONSUMER -- OAuth authentication consumer key.
     JIRA_CERT -- OAuth authentication key certificate data.
+    JIRA_IGNORE_INITIAL_CONNECTION_FAILURE -- Ignore ConnectionError during init_app() for testing/development.
 
     The above settings names are based on the default config prefix of 'JIRA'. If the config_prefix is 'JIRA_SYSTEM' for
     example, then JIRA_SERVER will be JIRA_SYSTEM_SERVER, and so on.
+
+    The JIRA_IGNORE_INITIAL_CONNECTION_FAILURE setting is False by default. If set to True (don't do this in production)
+    then any ConnectionError exceptions will be handled and ignored during the init_app() call. This is useful when
+    developers are not on VPN or don't have access to the JIRA server even though they are working on an unrelated
+    feature. This is especially useful for development while commuting.
     """
+
     def __init__(self, app=None, config_prefix=None):
         """If app argument provided then initialize JIRA using application config values.
 
@@ -120,4 +130,8 @@ class JIRA(client.JIRA):
         args = read_config(app, config_prefix)
 
         # Initialize fully.
-        super(JIRA, self).__init__(**args)
+        try:
+            super(JIRA, self).__init__(**args)
+        except ConnectionError:
+            if not app.config.get('{}_IGNORE_INITIAL_CONNECTION_FAILURE'.format(config_prefix)):
+                raise
