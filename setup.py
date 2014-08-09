@@ -18,7 +18,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 # Get the long description and other data from the relevant files
 with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
-with open(os.path.join(here, 'flask_jira.py')) as f:
+with open(os.path.join(here, 'flask_jira.py'), encoding='utf-8') as f:
     lines = [l.strip() for l in f if l.startswith('__')]
 metadata = ast.literal_eval("{'" + ", '".join([l.replace(' = ', "': ") for l in lines]) + '}')
 __author__, __license__, __version__ = [metadata[k] for k in ('__author__', '__license__', '__version__')]

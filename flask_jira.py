@@ -33,7 +33,7 @@ def read_config(config, prefix):
     # Get all relevant config values from Flask application.
     suffixes = ('SERVER', 'USER', 'PASSWORD', 'TOKEN', 'SECRET', 'CONSUMER', 'CERT')
     config_server, config_user, config_password, config_token, config_secret, config_consumer, config_cert = [
-        config.get('{}_{}'.format(prefix, suffix)) for suffix in suffixes
+        config.get('{0}_{1}'.format(prefix, suffix)) for suffix in suffixes
     ]
     result = dict(options=dict(server=config_server))
     # Gather authentication data.
@@ -133,5 +133,5 @@ class JIRA(client.JIRA):
         try:
             super(JIRA, self).__init__(**args)
         except ConnectionError:
-            if not app.config.get('{}_IGNORE_INITIAL_CONNECTION_FAILURE'.format(config_prefix)):
+            if not app.config.get('{0}_IGNORE_INITIAL_CONNECTION_FAILURE'.format(config_prefix)):
                 raise
