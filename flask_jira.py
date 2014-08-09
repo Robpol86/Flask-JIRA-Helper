@@ -100,11 +100,11 @@ class JIRA(client.JIRA):
             self.init_app()'s docstring.
         """
         self.original_kill_session = self.kill_session
-        self.kill_session = self.fake_kill_session
+        self.kill_session = self._fake_kill_session
         if app is not None:
             self.init_app(app, config_prefix)
 
-    def fake_kill_session(self):
+    def _fake_kill_session(self):
         """Does nothing. Used to temporary overwrite self.kill_session() in self.__init__().
 
         JIRA calls self.kill_session() even when no session was created.

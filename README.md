@@ -4,10 +4,21 @@ A simple JIRA extension for Flask. Supports basic authentication and OAuth.
 
 *OAuth is currently untested.*
 
+[![Build Status](https://travis-ci.org/Robpol86/Flask-JIRA-Helper.svg?branch=master)]
+(https://travis-ci.org/Robpol86/Flask-JIRA-Helper)
+[![Latest Version](https://pypip.in/version/Flask-JIRA-Helper/badge.png)]
+(https://pypi.python.org/pypi/Flask-JIRA-Helper/)
+[![Downloads](https://pypip.in/download/Flask-JIRA-Helper/badge.png)]
+(https://pypi.python.org/pypi/Flask-JIRA-Helper/)
+[![Download format](https://pypip.in/format/Flask-JIRA-Helper/badge.png)]
+(https://pypi.python.org/pypi/Flask-JIRA-Helper/)
+[![License](https://pypip.in/license/Flask-JIRA-Helper/badge.png)]
+(https://pypi.python.org/pypi/Flask-JIRA-Helper/)
+
 ## Supported Platforms
 
 * OSX and Linux.
-* Python 2.7
+* Python 2.6, 2.7, 3.3, 3.4
 * [Flask](http://flask.pocoo.org/) 0.10.1
 * [JIRA](http://jira-python.readthedocs.org/en/latest/) 0.21
 
@@ -80,8 +91,14 @@ The following config settings are searched for in the Flask application's config
 * `JIRA_SECRET` -- OAuth authentication access token secret.
 * `JIRA_CONSUMER` -- OAuth authentication consumer key.
 * `JIRA_CERT` -- OAuth authentication key certificate data.
+* `JIRA_IGNORE_INITIAL_CONNECTION_FAILURE` -- Ignore ConnectionError during init_app() for testing/development.
 
 ## Changelog
+
+#### 0.2.0
+
+* Added JIRA_IGNORE_INITIAL_CONNECTION_FAILURE option.
+* Added Python 2.6 and 3.x support.
 
 #### 0.1.2
 
