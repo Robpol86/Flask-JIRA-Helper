@@ -4,12 +4,16 @@ https://github.com/Robpol86/Flask-JIRA-Helper
 https://pypi.python.org/pypi/Flask-JIRA-Helper
 """
 
+import logging
+
 from jira import client
 from requests import ConnectionError
+
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
 __version__ = '0.2.0'
+LOG = logging.getLogger(__name__)
 
 
 def read_config(config, prefix):
@@ -96,9 +100,16 @@ class JIRA(client.JIRA):
             self.init_app()'s docstring.
         """
         self.original_kill_session = self.kill_session
-        self.kill_session = lambda x: None  # JIRA calls this even when no session was created. Disabling for now.
+        self.kill_session = self.fake_kill_session
         if app is not None:
             self.init_app(app, config_prefix)
+
+    def fake_kill_session(self):
+        """Does nothing. Used to temporary overwrite self.kill_session() in self.__init__().
+
+        JIRA calls self.kill_session() even when no session was created.
+        """
+        return self
 
     def init_app(self, app, config_prefix=None):
         """Actual method to read JIRA settings from app configuration and initialize the JIRA instance.
@@ -135,3 +146,4 @@ class JIRA(client.JIRA):
         except ConnectionError:
             if not app.config.get('{0}_IGNORE_INITIAL_CONNECTION_FAILURE'.format(config_prefix)):
                 raise
+            LOG.exception('Ignoring ConnectionError.')
