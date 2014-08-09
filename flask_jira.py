@@ -12,7 +12,7 @@ __license__ = 'MIT'
 __version__ = '0.2.0'
 
 
-def read_config(app, prefix):
+def read_config(config, prefix):
     """Return a jira.client.JIRA.__init__() compatible dictionary from data in the Flask config.
 
     Generate a dictionary compatible with jira.client.JIRA.__init__() keyword arguments from data in the Flask
@@ -20,11 +20,11 @@ def read_config(app, prefix):
     authentication takes precedence.
 
     Usage:
-    config = read_config(app, prefix)
+    config = read_config(app.config, prefix)
     jira = JIRA(**config)
 
     Positional arguments:
-    app -- Flask application instance.
+    config -- Flask application config dictionary.
     prefix -- Prefix used in config key names in the Flask app's configuration.
 
     Returns:
@@ -33,7 +33,7 @@ def read_config(app, prefix):
     # Get all relevant config values from Flask application.
     suffixes = ('SERVER', 'USER', 'PASSWORD', 'TOKEN', 'SECRET', 'CONSUMER', 'CERT')
     config_server, config_user, config_password, config_token, config_secret, config_consumer, config_cert = [
-        app.config.get('{}_{}'.format(prefix, suffix)) for suffix in suffixes
+        config.get('{}_{}'.format(prefix, suffix)) for suffix in suffixes
     ]
     result = dict(options=dict(server=config_server))
     # Gather authentication data.
@@ -127,7 +127,7 @@ class JIRA(client.JIRA):
         app.extensions[config_prefix.lower()] = _JIRAState(self, app)
 
         # Read config.
-        args = read_config(app, config_prefix)
+        args = read_config(app.config, config_prefix)
 
         # Initialize fully.
         try:

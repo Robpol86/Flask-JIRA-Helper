@@ -1,10 +1,13 @@
 import ast
+import atexit
 from codecs import open  # To use a consistent encoding
+from distutils.spawn import find_executable
 import os
 import setuptools
 import setuptools.command.sdist
 from setuptools.command.test import test
 import sys
+import subprocess
 
 
 setattr(setuptools.command.sdist, 'READMES',
@@ -41,6 +44,18 @@ class PyTestCov(PyTest):
         test.finalize_options(self)
         setattr(self, 'test_args', ['--cov', 'flask_jira', 'tests'])
         setattr(self, 'test_suite', True)
+
+
+class PyTestCovWeb(PyTest):
+    def finalize_options(self):
+        test.finalize_options(self)
+        setattr(self, 'test_args', ['--cov-report', 'html', '--cov', 'flask_jira', 'tests'])
+        setattr(self, 'test_suite', True)
+
+    def run_tests(self):
+        if find_executable('open'):
+            atexit.register(lambda: subprocess.call(['open', os.path.join(here, 'htmlcov', 'index.html')]))
+        PyTest.run_tests(self)
 
 
 # Setup definition.
@@ -100,5 +115,5 @@ setuptools.setup(
     install_requires=['Flask', 'jira'],
 
     tests_require=['pytest'],
-    cmdclass=dict(test=PyTest, testcov=PyTestCov),
+    cmdclass=dict(test=PyTest, testcov=PyTestCov, testcovweb=PyTestCovWeb),
 )
