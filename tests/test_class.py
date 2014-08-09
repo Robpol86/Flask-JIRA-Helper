@@ -31,3 +31,10 @@ def test_ignore_initial_connection_failure():
     current_app.config['JIRA_IGNORE_INITIAL_CONNECTION_FAILURE'] = True
     jira = JIRA(current_app)
     assert current_app.extensions['jira'].jira == jira
+
+
+def test_multiple():
+    assert 'jira' in current_app.extensions
+
+    with pytest.raises(ValueError):
+        JIRA(current_app)
