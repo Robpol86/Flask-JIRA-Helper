@@ -1,13 +1,14 @@
 import ast
 import atexit
-from codecs import open  # To use a consistent encoding
+from codecs import open
 from distutils.spawn import find_executable
 import os
+import sys
+import subprocess
+
 import setuptools
 import setuptools.command.sdist
 from setuptools.command.test import test
-import sys
-import subprocess
 
 
 setattr(setuptools.command.sdist, 'READMES',

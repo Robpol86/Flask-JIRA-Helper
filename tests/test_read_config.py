@@ -1,5 +1,6 @@
-from flask.ext.jira import read_config
 import pytest
+
+from flask.ext.jira import read_config
 
 
 def test_basic_auth():
