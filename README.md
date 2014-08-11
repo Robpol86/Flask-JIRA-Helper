@@ -4,6 +4,8 @@ A simple JIRA extension for Flask. Supports basic authentication and OAuth.
 
 [![Build Status](https://travis-ci.org/Robpol86/Flask-JIRA-Helper.svg?branch=master)]
 (https://travis-ci.org/Robpol86/Flask-JIRA-Helper)
+[![Coverage Status](https://img.shields.io/coveralls/Robpol86/Flask-JIRA-Helper.svg)]
+(https://coveralls.io/r/Robpol86/Flask-JIRA-Helper)
 [![Latest Version](https://pypip.in/version/Flask-JIRA-Helper/badge.png)]
 (https://pypi.python.org/pypi/Flask-JIRA-Helper/)
 [![Downloads](https://pypip.in/download/Flask-JIRA-Helper/badge.png)]
